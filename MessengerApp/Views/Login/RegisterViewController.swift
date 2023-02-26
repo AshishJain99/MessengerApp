@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
 
@@ -124,17 +125,31 @@ class RegisterViewController: UIViewController {
         nameField.resignFirstResponder()
         passwordField.resignFirstResponder()
         nameField.resignFirstResponder()
-        guard let name = nameField.text,let password = passwordField.text, !name.isEmpty, !password.isEmpty, password.count>=6
+        guard let email = userEmailField.text,let name = nameField.text,let password = passwordField.text, !email.isEmpty,!name.isEmpty, !password.isEmpty, password.count>=6
         else{
             showAlert()
             return
         }
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            guard let result = authResult, error ==  nil else{
+                print("Error in Creating User")
+                return
+            }
+            let user = result.user
+            print("Created User\(user)")
+        }
     }
+    
+   
     
     @objc func didTapChangeProfilePic(){
         print("This is Cool")
         presentPhotoActionSheet()
     }
+    
+    //Firebase Login
+    
+   
     
     private func showAlert(){
         let alert = UIAlertController(title: "Detail missing", message: "Some detail is missing", preferredStyle: .alert)
