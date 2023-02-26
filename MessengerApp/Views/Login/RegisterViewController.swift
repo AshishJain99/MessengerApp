@@ -18,7 +18,7 @@ class RegisterViewController: UIViewController {
     
     private let userImage:UIImageView={
        let image = UIImageView()
-        image.image = UIImage(systemName: "person")
+        image.image = UIImage(systemName: "person.circle")
         image.tintColor = .gray
         image.contentMode = .scaleAspectFit
         image.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -130,13 +130,19 @@ class RegisterViewController: UIViewController {
             showAlert()
             return
         }
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            
+            guard let strongSelf = self else{
+                return
+            }
+            
             guard let result = authResult, error ==  nil else{
                 print("Error in Creating User")
                 return
             }
             let user = result.user
             print("Created User\(user)")
+            strongSelf.navigationController?.dismiss(animated: true)
         }
     }
     
