@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		960BBA3429AA6AFC00E09285 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 960BBA3329AA6AFC00E09285 /* GoogleService-Info.plist */; };
 		960BBA3729AA70B500E09285 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA3629AA70B500E09285 /* FirebaseAuth */; };
 		960BBA3929AA70B500E09285 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA3829AA70B500E09285 /* FirebaseCrashlytics */; };
 		960BBA3B29AA70B500E09285 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA3A29AA70B500E09285 /* FirebaseDatabase */; };
@@ -18,6 +17,8 @@
 		960BBA4529AA70B500E09285 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA4429AA70B500E09285 /* FirebaseRemoteConfig */; };
 		960BBA4729AA70B500E09285 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA4629AA70B500E09285 /* FirebaseRemoteConfigSwift */; };
 		960BBA4929AA70B500E09285 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 960BBA4829AA70B500E09285 /* FirebaseStorage */; };
+		960BBA4B29AB8A7900E09285 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960BBA4A29AB8A7900E09285 /* DatabaseManager.swift */; };
+		960BBA4D29AB983A00E09285 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 960BBA4C29AB983A00E09285 /* GoogleService-Info.plist */; };
 		966AE66B29A5233E00693861 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE66A29A5233E00693861 /* AppDelegate.swift */; };
 		966AE66D29A5233E00693861 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE66C29A5233E00693861 /* SceneDelegate.swift */; };
 		966AE66F29A5233E00693861 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE66E29A5233E00693861 /* ConversationsViewController.swift */; };
@@ -34,7 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		960BBA3329AA6AFC00E09285 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		960BBA4A29AB8A7900E09285 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		960BBA4C29AB983A00E09285 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		966AE66729A5233E00693861 /* MessengerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessengerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		966AE66A29A5233E00693861 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		966AE66C29A5233E00693861 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,7 +100,7 @@
 				966AE68029A5246D00693861 /* Views */,
 				966AE68229A5247400693861 /* Controllers */,
 				966AE67829A5234000693861 /* Info.plist */,
-				960BBA3329AA6AFC00E09285 /* GoogleService-Info.plist */,
+				960BBA4C29AB983A00E09285 /* GoogleService-Info.plist */,
 			);
 			path = MessengerApp;
 			sourceTree = "<group>";
@@ -116,6 +118,7 @@
 				966AE66A29A5233E00693861 /* AppDelegate.swift */,
 				966AE66C29A5233E00693861 /* SceneDelegate.swift */,
 				966AE69429A52FD100693861 /* Extension.swift */,
+				960BBA4A29AB8A7900E09285 /* DatabaseManager.swift */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -242,7 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				966AE67729A5234000693861 /* LaunchScreen.storyboard in Resources */,
-				960BBA3429AA6AFC00E09285 /* GoogleService-Info.plist in Resources */,
+				960BBA4D29AB983A00E09285 /* GoogleService-Info.plist in Resources */,
 				966AE67429A5234000693861 /* Assets.xcassets in Resources */,
 				966AE67229A5233E00693861 /* Main.storyboard in Resources */,
 			);
@@ -256,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				966AE68529A5268500693861 /* LoginViewController.swift in Sources */,
+				960BBA4B29AB8A7900E09285 /* DatabaseManager.swift in Sources */,
 				966AE68729A5269D00693861 /* RegisterViewController.swift in Sources */,
 				966AE68D29A526FC00693861 /* NewConversationViewController.swift in Sources */,
 				966AE66F29A5233E00693861 /* ConversationsViewController.swift in Sources */,

@@ -9,15 +9,15 @@ import UIKit
 import FirebaseAuth
 
 class RegisterViewController: UIViewController {
-
+    
     private let scrollView:UIScrollView = {
-       let scrollView = UIScrollView()
+        let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
         return scrollView
     }()
     
     private let userImage:UIImageView={
-       let image = UIImageView()
+        let image = UIImageView()
         image.image = UIImage(systemName: "person.circle")
         image.tintColor = .gray
         image.contentMode = .scaleAspectFit
@@ -29,7 +29,7 @@ class RegisterViewController: UIViewController {
     }()
     
     private let nameField:UITextField={
-       let text = UITextField()
+        let text = UITextField()
         text.autocorrectionType = .no
         text.placeholder = "Name.."
         text.returnKeyType = .next
@@ -55,10 +55,10 @@ class RegisterViewController: UIViewController {
         return text
     }()
     
-
+    
     
     private let passwordField:UITextField={
-       let text = UITextField()
+        let text = UITextField()
         text.autocorrectionType = .no
         text.autocapitalizationType = .none
         text.returnKeyType = .done
@@ -100,13 +100,13 @@ class RegisterViewController: UIViewController {
         passwordField.delegate = self
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapChangeProfilePic))
-//        gesture.numberOfTapsRequired = 1
-//        gesture.numberOfTouchesRequired = 1
-//
+        //        gesture.numberOfTapsRequired = 1
+        //        gesture.numberOfTouchesRequired = 1
+        //
         userImage.addGestureRecognizer(gesture)
         
     }
-
+    
     override func viewDidLayoutSubviews() {
         scrollView.frame = view.bounds
         let size = scrollView.width/3
@@ -130,23 +130,31 @@ class RegisterViewController: UIViewController {
             showAlert()
             return
         }
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
-            
+        DatabaseManager.shared.userExists(with: email) { [weak self]exists in
             guard let strongSelf = self else{
                 return
             }
-            
-            guard let result = authResult, error ==  nil else{
-                print("Error in Creating User")
+            // user already exists
+            guard !exists else{
+                strongSelf.showAlert(message: "User already exists")
                 return
             }
-            let user = result.user
-            print("Created User\(user)")
-            strongSelf.navigationController?.dismiss(animated: true)
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) {authResult, error in
+                
+                
+                
+                guard authResult != nil, error ==  nil else{
+                    print("Error in Creating User")
+                    return
+                }
+                DatabaseManager.shared.inserUser(with: ChatAppUser(Name: name, emailAddress: email))
+                strongSelf.navigationController?.dismiss(animated: true)
+            }
         }
+        
     }
     
-   
+    
     
     @objc func didTapChangeProfilePic(){
         print("This is Cool")
@@ -155,10 +163,10 @@ class RegisterViewController: UIViewController {
     
     //Firebase Login
     
-   
     
-    private func showAlert(){
-        let alert = UIAlertController(title: "Detail missing", message: "Some detail is missing", preferredStyle: .alert)
+    
+    private func showAlert(message:String = "Some detail is missing"){
+        let alert = UIAlertController(title: "Detail missing", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
         present(alert, animated: true)
     }
