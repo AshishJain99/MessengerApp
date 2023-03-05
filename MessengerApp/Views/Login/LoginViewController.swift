@@ -66,7 +66,11 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-    private let loginButton = FBLoginButton()
+    private let FacebookLoginButton:FBLoginButton={
+        let button = FBLoginButton()
+        button.permissions = ["public_profile", "email"]
+        return button
+    }()
     
     
     override func viewDidLoad() {
@@ -82,13 +86,14 @@ class LoginViewController: UIViewController {
         emailField.delegate = self
         passwordField.delegate = self
         
+        FacebookLoginButton.delegate = self
+        
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(LoginButton)
-        loginButton.center = view.center
-        scrollView.addSubview(loginButton)
+        scrollView.addSubview(FacebookLoginButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -102,8 +107,8 @@ class LoginViewController: UIViewController {
         emailField.frame = CGRect(x: 30, y: imageView.bottom+10 , width: scrollView.width-60, height: 52)
         passwordField.frame = CGRect(x: 30, y: emailField.bottom+10, width: scrollView.width-60, height: 52)
         LoginButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
-        loginButton.center = scrollView.center
-        loginButton.frame.origin.y = loginButton.bottom+20
+        FacebookLoginButton.frame = CGRect(x: 30, y: LoginButton.bottom+10, width: scrollView.width-60, height: 52)
+        FacebookLoginButton.frame.origin.y = LoginButton.bottom+20
     }
     
     @objc private func loginButtonTapped(){
@@ -162,5 +167,68 @@ extension LoginViewController: UITextFieldDelegate{
         
         return true
     }
+    
+}
+
+extension LoginViewController:LoginButtonDelegate{
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let token = result?.token?.tokenString else{
+            print("User failed to Login with facebook")
+            return
+        }
+        
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
+                                                         parameters: ["fields": "email, name"],
+                                                         tokenString: token,
+                                                         version: nil, httpMethod: .get)
+        
+        
+        facebookRequest.start(completionHandler: {
+            _,result,error in
+            
+            guard let result = result as? [String:Any],error == nil else{
+                print("Problem in here")
+                return
+            }
+            
+            guard let userName = result["name"] as? String,
+                  let email = result["email"] as? String else{
+                print("Could not get email id or username")
+                return
+            }
+            
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists{
+                    DatabaseManager.shared.inserUser(with: ChatAppUser(Name: userName, emailAddress: email))
+                }
+            }
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential) {[weak self] authResult, error in
+                
+                guard let strongSelf = self else{
+                    return
+                }
+                
+                guard authResult != nil, error ==  nil else {
+                    print("Facebook credentials login failed, MFA may be needed")
+                    return
+                }
+                
+                print("Successfully loged user in")
+                strongSelf.navigationController?.dismiss(animated: true)
+            }
+            
+        })
+        
+        
+        
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        // No operation
+    }
+    
     
 }
