@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 import FacebookLogin
+import GoogleSignIn
+import FirebaseCore
 
 class LoginViewController: UIViewController {
 
@@ -68,10 +70,14 @@ class LoginViewController: UIViewController {
     
     private let FacebookLoginButton:FBLoginButton={
         let button = FBLoginButton()
-        button.permissions = ["public_profile", "email"]
+     //   button.permissions = ["public_profile", "email"]
         return button
     }()
-    
+ 
+    private let GoogleLoginButton:GIDSignInButton={
+        let button = GIDSignInButton()
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +88,7 @@ class LoginViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(didTapRegister))
         LoginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        GoogleLoginButton.addTarget(self, action: #selector(GoogleLoginButtonTapped), for: .touchUpInside)
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -94,6 +101,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(LoginButton)
         scrollView.addSubview(FacebookLoginButton)
+        scrollView.addSubview(GoogleLoginButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -108,7 +116,8 @@ class LoginViewController: UIViewController {
         passwordField.frame = CGRect(x: 30, y: emailField.bottom+10, width: scrollView.width-60, height: 52)
         LoginButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
         FacebookLoginButton.frame = CGRect(x: 30, y: LoginButton.bottom+10, width: scrollView.width-60, height: 52)
-        FacebookLoginButton.frame.origin.y = LoginButton.bottom+20
+        
+        GoogleLoginButton.frame = CGRect(x: 30, y: FacebookLoginButton.bottom+10, width: scrollView.width-60, height: 52)
     }
     
     @objc private func loginButtonTapped(){
@@ -137,6 +146,10 @@ class LoginViewController: UIViewController {
             strongSelf.navigationController?.dismiss(animated: true)
             
         }
+    }
+    
+    @objc private func GoogleLoginButtonTapped(){
+        signInWithGoogle(vc: self)
     }
     
     func alertUserLoginError(){
@@ -230,5 +243,44 @@ extension LoginViewController:LoginButtonDelegate{
         // No operation
     }
     
+    
+    func signInWithGoogle(vc: UIViewController) {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        let signInConfig = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = signInConfig
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: vc) { result, error in
+            guard error == nil else {
+                print("Error in signing in using google")
+                return }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken else {
+                return
+            }
+            
+            guard let email = user.profile?.email,let name = user.profile?.name else{
+                return
+            }
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists{
+                    //insert user to database
+                    DatabaseManager.shared.inserUser(with: ChatAppUser(Name: name, emailAddress: email))
+                }
+            }
+            
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken.tokenString,
+                accessToken: user.accessToken.tokenString
+            )
+            
+            Auth.auth().signIn(with: credential) { result, error in
+                guard result != nil,error == nil else {
+                    print("Something is wrong with auth using google")
+                    return }
+                self.navigationController?.dismiss(animated: true)
+            }
+        }
+    }
     
 }

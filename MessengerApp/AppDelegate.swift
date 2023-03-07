@@ -9,6 +9,7 @@
 import UIKit
 import FacebookCore
 import FirebaseCore
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,5 +38,14 @@ func application(
         sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
         annotation: options[UIApplication.OpenURLOptionsKey.annotation]
     )
+    
+    var handler: Bool
+    
+    handler = GIDSignIn.sharedInstance.handle(url)
+    if handler {
+        return true
+    }
+    
+    return false
 }
 }
