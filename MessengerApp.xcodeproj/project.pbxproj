@@ -35,6 +35,9 @@
 		966AE68D29A526FC00693861 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE68C29A526FC00693861 /* NewConversationViewController.swift */; };
 		966AE68F29A5270F00693861 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE68E29A5270F00693861 /* ProfileViewController.swift */; };
 		966AE69529A52FD100693861 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966AE69429A52FD100693861 /* Extension.swift */; };
+		96F96C9A29B7AD7C00063EC7 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 96F96C9929B7AD7C00063EC7 /* JGProgressHUD */; };
+		96F96C9C29B7AE3100063EC7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F96C9B29B7AE3100063EC7 /* ChatViewController.swift */; };
+		96F96C9F29B7B2A100063EC7 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 96F96C9E29B7B2A100063EC7 /* MessageKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +59,7 @@
 		966AE68C29A526FC00693861 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		966AE68E29A5270F00693861 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		966AE69429A52FD100693861 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		96F96C9B29B7AE3100063EC7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,8 @@
 				960BBA7D29B3B97A00E09285 /* GoogleSignInSwift in Frameworks */,
 				960BBA7B29B3B97A00E09285 /* GoogleSignIn in Frameworks */,
 				960BBA5029AD1F7200E09285 /* FacebookLogin in Frameworks */,
+				96F96C9A29B7AD7C00063EC7 /* JGProgressHUD in Frameworks */,
+				96F96C9F29B7B2A100063EC7 /* MessageKit in Frameworks */,
 				960BBA3729AA70B500E09285 /* FirebaseAuth in Frameworks */,
 				960BBA3F29AA70B500E09285 /* FirebaseFirestore in Frameworks */,
 				960BBA3929AA70B500E09285 /* FirebaseCrashlytics in Frameworks */,
@@ -156,6 +162,7 @@
 				966AE68A29A526DA00693861 /* VideoPlayerViewController.swift */,
 				966AE68C29A526FC00693861 /* NewConversationViewController.swift */,
 				966AE68E29A5270F00693861 /* ProfileViewController.swift */,
+				96F96C9B29B7AE3100063EC7 /* ChatViewController.swift */,
 			);
 			name = Controllers;
 			path = Views;
@@ -209,6 +216,8 @@
 				960BBA4F29AD1F7200E09285 /* FacebookLogin */,
 				960BBA7A29B3B97A00E09285 /* GoogleSignIn */,
 				960BBA7C29B3B97A00E09285 /* GoogleSignInSwift */,
+				96F96C9929B7AD7C00063EC7 /* JGProgressHUD */,
+				96F96C9E29B7B2A100063EC7 /* MessageKit */,
 			);
 			productName = MessengerApp;
 			productReference = 966AE66729A5233E00693861 /* MessengerApp.app */;
@@ -242,6 +251,8 @@
 				960BBA3529AA70B500E09285 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				960BBA4E29AD1F7200E09285 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				960BBA7929B3B97A00E09285 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				96F96C9829B7AD7C00063EC7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				96F96C9D29B7B2A100063EC7 /* XCRemoteSwiftPackageReference "MessageKit" */,
 			);
 			productRefGroup = 966AE66829A5233E00693861 /* Products */;
 			projectDirPath = "";
@@ -281,6 +292,7 @@
 				966AE66B29A5233E00693861 /* AppDelegate.swift in Sources */,
 				966AE68F29A5270F00693861 /* ProfileViewController.swift in Sources */,
 				966AE66D29A5233E00693861 /* SceneDelegate.swift in Sources */,
+				96F96C9C29B7AE3100063EC7 /* ChatViewController.swift in Sources */,
 				966AE68929A526C100693861 /* PhotoViewerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +539,22 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		96F96C9829B7AD7C00063EC7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		96F96C9D29B7B2A100063EC7 /* XCRemoteSwiftPackageReference "MessageKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MessageKit/MessageKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -594,6 +622,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 960BBA7929B3B97A00E09285 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		96F96C9929B7AD7C00063EC7 /* JGProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F96C9829B7AD7C00063EC7 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
+		};
+		96F96C9E29B7B2A100063EC7 /* MessageKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96F96C9D29B7B2A100063EC7 /* XCRemoteSwiftPackageReference "MessageKit" */;
+			productName = MessageKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
